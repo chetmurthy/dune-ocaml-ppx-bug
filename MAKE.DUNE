@@ -1,0 +1,21 @@
+#!/bin/bash -x
+
+./CLEAN
+
+PACKAGES=ppx_inline_test.runtime-lib,ppx_expect,ppx_expect.matcher,ppx_expect.collector,ppx_expect.evaluator,ppx_inline_test.runner.lib
+
+ocamlfind ocamlfind2/papr_official.exe -binary-output -impl test_inline_test.ml /tmp/test_inline_testb7008e
+ocamlfind ppx_expect/ppx.exe --as-ppx --cookie 'library-name="foo"' /tmp/test_inline_testb7008e /tmp/test_inline_test20c5c8
+ocamlfind ocamlfind2/papr_official.exe -binary-input -impl /tmp/test_inline_test20c5c8 > test_inline_test.ml.ppx.ppo
+
+
+ocamlfind ocamlc -w -24 -package $PACKAGES -c -impl test_inline_test.ml.ppx.ppo -o test_inline_test.ml.ppx.cmo
+
+ocamlfind ocamlc -w -24 -package $PACKAGES -c -impl ppx_inline_test_epilogue.ml -o ppx_inline_test_epilogue.cmo
+
+ocamlfind ocamlc -custom -w -24 -g -o ./run.exe -linkall -linkpkg -package $PACKAGES \
+	 test_inline_test.ml.ppx.cmo \
+	 ppx_inline_test_epilogue.cmo
+
+./run.exe inline-test-runner foo -source-tree-root . -diff-cmd - || echo "test failed"
+/home/chet/Hack/Ocaml/GENERIC/4.10.0/bin/patdiff -keep-whitespace -location-style omake -unrefined test_inline_test.ml test_inline_test.ml.corrected

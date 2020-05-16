@@ -1,0 +1,3 @@
+#!/bin/bash -x
+
+rm -f test_inline_test.ml.corrected ./run.exe *.cm* *.o *.ppo *.exe /tmp/*test_inline*

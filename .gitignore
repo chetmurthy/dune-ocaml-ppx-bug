@@ -1,0 +1,7 @@
+*.cm*
+*.byte
+*.corrected
+*.ppo
+.merlin
+*.exe
+_build

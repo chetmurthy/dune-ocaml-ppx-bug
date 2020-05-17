@@ -15,4 +15,4 @@ ocamlfind ocamlc -custom -w -24 -g -o ./run.exe -linkall -linkpkg -package $PACK
 	 ppx_inline_test_epilogue.cmo
 
 ./run.exe inline-test-runner foo -source-tree-root . -diff-cmd - || echo "test failed"
-/home/chet/Hack/Ocaml/GENERIC/4.10.0/bin/patdiff -keep-whitespace -location-style omake -unrefined test_inline_test.ml test_inline_test.ml.corrected
+patdiff -keep-whitespace -location-style omake -unrefined test_inline_test.ml test_inline_test.ml.corrected

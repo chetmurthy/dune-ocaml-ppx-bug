@@ -38,6 +38,11 @@ File "<command-line>", line 1, characters 0-3:
 	Error: constant expected
 ```
 
+# Why doesn't this fail in `dune` ?
+
+`dune` doesn't use ocaml's `-ppx` facility -- it builds and invokes
+PPX rewriters directly before passing the results to ocamlc.
+
 # What's wrong?
 
 Well, ppx_expect needs a "library-name" arugment, and the format of that argument (after all shell-quoting has been removed) is
@@ -55,9 +60,17 @@ One could blame this on ocamlfind, or on ocamlc, but I think the blame
 falls on ppxlib (which is the library asking for this argument).  It
 uses the ocaml AST (parsetree.mli) parser to parse these arguments,
 and if it's going to do that, it should provide a way to pass such
-arguments in a file, and that way should be the default.
+arguments in a file, and that way should be sufficiently obvious that
+it's the default.  But this is pretty strenuous and would involve
+serious changes to ocamlfind and makefiles upstream.  So the best way
+to solve this problem, is to ALWAYS ensure that no quotes are used in
+arguments to PPX and PP rewriters.
 
-# Why doesn't this fail in `dune` ?
+Otherwise, bit-by-bit, you're going to find that you can't use PPX
+rewriters outside of dune, b/c ocamlfind will fail to invoke them
+correctly.
 
-`dune` doesn't use ocaml's `-ppx` facility -- it builds and invokes
-PPX rewriters directly before passing the results to ocamlc.
+Again, I don't blame ocamlfind: it wasn't expecting an argument in
+double-quotes, that would thus need to be single-quoted *twice*.
+Typically, humans are not good at dealing with that level of
+quotation.

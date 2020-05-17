@@ -12,7 +12,7 @@ And, I guess, `ocamlfind`
 
 # Prerequisites to reproduce
 
-You'll need to install `dune`, `ocamlfind` and `ppx_expect`.
+You'll need to install `patdiff`, `dune`, `ocamlfind` and `ppx_expect`.
 
 ```
 opam install ocamlfind ppx_expect dune

@@ -20,11 +20,11 @@ opam install ocamlfind ppx_expect dune
 
 # To repro
 
-1. Run `dune runtest`.  Observe that there's an (expected) test error.
+1. Run `dune runtest`.  Observe that there's an (expected) test failure.
 
-2. Run `./MAKE.OK`.  Observe the same (expected) test error.
+2. Run `./MAKE.OK`.  Observe the same (expected) test failure.
 
-3. Run `./MAKE.BUSTED`.  Observe that it fails.
+3. Run `./MAKE.BUSTED`.  Observe that it fails to even build.
 
 # What did I just see?
 
@@ -32,10 +32,10 @@ opam install ocamlfind ppx_expect dune
 
 2. a hand-built script that invokes the PPX rewriters does the same.  This script was built by reverse-engineering from dune's `_build/log`.
 
-3. but a naive `ocamlfind ocamlc invocation fails, complaining
+3. but a naive `ocamlfind ocamlc` invocation fails, complaining
 ```
 File "<command-line>", line 1, characters 0-3:
-Error: constant expected
+	Error: constant expected
 ```
 
 # What's wrong?

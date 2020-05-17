@@ -2,8 +2,8 @@
 
 This appears to be a bug triggered by a combination of
 
-``
-ocaml
+```
+ocamlc
 ppxlib
 ppx_expect
 ```
